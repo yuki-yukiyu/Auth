@@ -1,0 +1,25 @@
+.wrapper {
+  width: 100%;
+  @include ltr-rtl("padding-left", var(--cui-sidebar-occupy-start, 0));
+  will-change: auto;
+  @include transition(padding .15s);
+}
+
+.c-app {
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+.c-wrapper {
+  display: flex;
+  -webkit-box-flex: 1;
+  flex: 1 1 0%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  min-width: 0px;
+  min-height: 100vh;
+}
