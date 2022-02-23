@@ -66,4 +66,38 @@ const router = createRouter({
   },
 })
 
+router.beforeEach(async (to, from, next) => {
+  updateAccessToken()
+  let currentToken = localStorage.getItem('accessToken')
+  if (to.name !== 'Login' && (currentToken === null || currentToken === undefined)) {
+    router.push({
+      name: 'Login'
+    })
+  }
+  return next()
+})
+
+function updateAccessToken () {
+  let currentToken = localStorage.getItem('accessToken')
+  let cookies = document.cookie
+    let cookieMap = new Map()
+    if (document.cookie.includes('accessToken')) {
+      cookies = cookies.split(';')
+      cookies.forEach(item => {
+        item = item.split('=')
+        cookieMap.set(item[0].trim(), item[1])
+      })
+      let tagetToken = cookieMap.get('accessToken')
+      if (currentToken === null || currentToken === undefined || currentToken !== tagetToken) {
+        localStorage.setItem('accessToken', cookieMap.get('accessToken'))
+        localStorage.setItem('username', cookieMap.get('username'))
+        localStorage.setItem('displayName', cookieMap.get('displayName'))
+      }
+    } else {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('username')
+      localStorage.removeItem('displayName')
+    }
+}
+
 export default router

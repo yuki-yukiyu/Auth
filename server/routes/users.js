@@ -10,6 +10,26 @@ passport.use('login', new LocalStrategy({usernameField: 'username', passwordFiel
   return done(null, false, { message: 'Incorrect username or password.' });
 }));
 
+function setCookie (req, res, isClearCookie, cookieAge = 3600 * 8 * 1000) {
+  const CNameUserID = 'userID',
+  CNameAccessToken = 'accessToken',
+  CNAMEDisplayName = 'displayName';
+
+  let expDate = new Date(Date.now() + (isClearCookie ? 0 : cookieAge));
+
+  let cookieOpt = {
+      maxAge: cookieAge,
+      expires: expDate,
+      httpOnly: false,
+      secure: true,
+      sameSite: false
+  }; // domain and path use default
+
+  res.cookie(CNameUserID, isClearCookie ? '' : req.session.user.username, cookieOpt);
+  res.cookie(CNAMEDisplayName, isClearCookie ? '' : req.session.user.username, cookieOpt);
+  res.cookie(CNameAccessToken, isClearCookie ? '' : req.session.id, cookieOpt);
+}
+
 router.post('/login', (req, res) => {
   passport.authenticate('login', function (err, user, info) {    
       if (err) {
@@ -25,25 +45,7 @@ router.post('/login', (req, res) => {
             if (err) {
               return res.status(500).send(err);
             } // set cookies
-
-            const CNameUserID = 'userID',
-            CNameAccessToken = 'accessToken',
-            CNAMEDisplayName = 'displayName',
-            cookieAge = 3600 * 8 * 1000; //let cookieAge = 3600*8*1000; default 8 hours
-
-            let expDate = new Date(Date.now() + cookieAge); // do not set sameSite to true, as for safari cookie will not be saved. see https://github.com/expressjs/session/issues/698
-
-            let cookieOpt = {
-                maxAge: cookieAge,
-                expires: expDate,
-                httpOnly: false,
-                secure: true,
-                sameSite: false
-            }; // domain and path use default
-
-            res.cookie(CNameUserID, req.session.user.username, cookieOpt);
-            res.cookie(CNAMEDisplayName, req.session.user.username, cookieOpt);
-            res.cookie(CNameAccessToken, req.session.id, cookieOpt);
+            setCookie(req, res, false)
             res.redirect('/'); // ?userID=+req.session.user.username, put it into cookie
           })
         })
@@ -51,6 +53,14 @@ router.post('/login', (req, res) => {
           res.status(500).send(info.message);
       }
   })(req, res)
+})
+
+router.get('/logout', function (req, res) {
+  req.logout()
+  req.session.destroy((err) => {
+    setCookie(req, res, true, 0)
+    res.redirect('/')
+  })
 })
 
 module.exports = router;
