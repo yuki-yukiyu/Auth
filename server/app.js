@@ -3,6 +3,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var expressSession = require('express-session');
+
+passport.serializeUser(function(user, cb) {
+  console.log('[passport] serializeUser user:%s', user);
+  cb(null, user); // put into session.passport.user
+});
+
+passport.deserializeUser(function(user, cb) {
+  console.log('[passport] deserializeUser user:%s', user);
+  return cb(null, user);
+});
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,6 +27,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.set('trust proxy', 1);
+app.use(expressSession({
+    cookie: {
+        httpOnly: false,
+        secure: false,
+        sameSite: false,
+        maxAge: 8 * 3600 * 1000
+
+    },
+    secret: 'dashboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/api/users', usersRouter);
 app.use('/', indexRouter);

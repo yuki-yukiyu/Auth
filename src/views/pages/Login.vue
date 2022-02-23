@@ -96,8 +96,7 @@ export default {
         this.$axios.post('/users/login', {
           username: that.username,
           password: that.password
-        }).then(res => {
-          console.log(res.data)
+        }).then(() => {
           that.$router.push({
             name: 'Overview'
           })

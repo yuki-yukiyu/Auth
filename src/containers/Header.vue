@@ -6,28 +6,28 @@
       </CHeaderToggler>
       <CHeaderNav class="d-none d-md-flex me-auto">
         <CNavItem class="px-3">
-          <CNavLink href="/#/Overview"> Overview </CNavLink>
+          <CNavLink href="/#/Overview" to="/Overview"> Overview </CNavLink>
         </CNavItem>
         <CNavItem  class="px-3">
-          <CNavLink href="#">Users</CNavLink>
+          <CNavLink href="#" to="/Overview">Users</CNavLink>
         </CNavItem>
         <CNavItem  class="px-3">
-          <CNavLink href="#">Settings</CNavLink>
+          <CNavLink href="#" to="/Overview">Settings</CNavLink>
         </CNavItem>
       </CHeaderNav>
       <CHeaderNav>
         <CNavItem>
-          <CNavLink href="#">
+          <CNavLink href="#" to="/Overview">
             <CIcon class="mx-2" icon="cil-bell" size="lg" />
           </CNavLink>
         </CNavItem>
         <CNavItem>
-          <CNavLink href="#">
+          <CNavLink href="#" to="/Overview">
             <CIcon class="mx-2" icon="cil-list" size="lg" />
           </CNavLink>
         </CNavItem>
         <CNavItem>
-          <CNavLink href="#">
+          <CNavLink href="#" to="/Overview">
             <CIcon class="mx-2" icon="cil-envelope-open" size="lg" />
           </CNavLink>
         </CNavItem>
