@@ -49,6 +49,10 @@
                     </CButton>
                   </CCol>
                 </CRow>
+                <div style="display: flex;align-items: center;" @click="loginWithWechat()">
+                <CIcon icon="cib-wechat" />
+                wechat
+                </div>
               </CCardBody>
             </CCard>
             <CCard class="text-white bg-primary py-5" style="width: 44%">
@@ -107,6 +111,21 @@ export default {
           that.isLoading = false
         })
       }
+    },
+    loginWithWechat() {
+      var that = this
+        // this.isLoading = true
+        this.$axios.get('/users/login/wechat').then((res) => {
+          window.open(res.data)
+          // that.$router.push({
+          //   name: 'Overview'
+          // })
+        }).catch(err => {
+          that.alertMessage = err.response.data
+          that.showAlert = true
+        }).finally(() => {
+          that.isLoading = false
+        })
     }
   }
 }

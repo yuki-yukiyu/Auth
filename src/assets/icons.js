@@ -21,6 +21,7 @@ import {
     cibPaypal,
     cibGooglePay,
     cibCcAmex,
+    cibWechat,
     cifUs,
     cifBr,
     cifIn,
@@ -202,6 +203,7 @@ export const icons =
       cibStripe,
       cibPaypal,
       cibGooglePay,
-      cibCcAmex
+      cibCcAmex,
+      cibWechat
     }
   
